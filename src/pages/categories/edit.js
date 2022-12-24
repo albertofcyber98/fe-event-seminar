@@ -7,7 +7,7 @@ import SBreadcrumb from '../../components/Breadcrumb'
 
 export default function CategoriesEdit() {
   const navigate = useNavigate()
-  const { categoriesId } = useParams
+  // const { categoriesId } = useParams()
   const [form, setForm] = useState({
     name:''
   })
