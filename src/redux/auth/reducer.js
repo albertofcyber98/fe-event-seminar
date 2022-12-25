@@ -2,7 +2,7 @@ import { USER_LOGIN, USER_LOGOUT } from './constants'
 
 let initialState = localStorage.getItem('auth')
   ? JSON.parse(localStorage.getItem('auth'))
-  : { token: null, role: null }
+  : { token: null, role: null };
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {

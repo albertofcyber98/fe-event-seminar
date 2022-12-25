@@ -1,13 +1,15 @@
 import React, {useState} from 'react'
 import Container from 'react-bootstrap/Container'
 import Card from 'react-bootstrap/Card'
-import axios from 'axios'
 import SAlert from '../../components/Alert'
-import { Navigate, useNavigate } from 'react-router-dom'
-import { config } from '../../configs'
+import { useNavigate } from 'react-router-dom'
 import SForm from './form'
+import { postData } from '../../utils/fetch'
+import { useDispatch } from 'react-redux'
+import { userLogin } from '../../redux/auth/action'
 
 export default function Signin() {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const [form, setForm] = useState({
     email: '',
@@ -25,15 +27,17 @@ export default function Signin() {
   const handleSubmit = async () => {
     setIsLoading(true)
     try {
-      const res = await axios.post(
-        `${config.api_host_dev}/cms/auth/signin`,
-        {
-          email: form.email,
-          password: form.password
-        }
-      )
-      console.log(res.data.data.token)
-      localStorage.setItem('token', res.data.data.token)
+      const res = await postData(`/cms/auth/signin`, form)
+      // const res = await axios.post(
+      //   `${config.api_host_dev}/cms/auth/signin`,
+      //   {
+      //     email: form.email,
+      //     password: form.password
+      //   }
+      // )
+      // console.log(res.data.data.token)
+      // localStorage.setItem('token', res.data.data.token)
+      dispatch(userLogin(res.data.data.token, res.data.data.role))
       setIsLoading(false)
       navigate('/')
     } catch (err) {
@@ -45,8 +49,8 @@ export default function Signin() {
       })
     }
   }
-  const token = localStorage.getItem('token')
-  if (token) return <Navigate to='/' replace={true} />
+  // const token = localStorage.getItem('token')
+  // if (token) return <Navigate to='/' replace={true} />
   return (
     <Container>
       <div className='m-auto mt-5' style={{ width: '50%' }}>

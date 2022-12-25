@@ -12,7 +12,7 @@ import authReducer from './auth/reducer'
 // import talentsReducer from './talents/reducer'
 // import paymentReducer from './payments/reducer'
 
-const composerEnhancer = window._REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+const composerEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 const rootReducers = combineReducers({
   auth: authReducer,
