@@ -1,75 +1,101 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect, useState} from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
-import { Container, Table, Spinner} from 'react-bootstrap'
-import SButton from '../../components/Button'
-import SBreadcrumb from '../../components/Breadcrumb'
-import SNavbar from '../../components/Navbar'
-import { config } from '../../configs'
-import axios from 'axios'
+import React, { useEffect, useState } from 'react';
+import { Container } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import SBreadCrumb from '../../components/Breadcrumb';
+import Button from '../../components/Button';
+// import Table from '../../components/TableWithAction';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchCategories } from '../../redux/categories/actions';
+import SAlert from '../../components/Alert';
+// import Swal from 'sweetalert2';
+import { deleteData } from '../../utils/fetch';
+// import { setNotif } from '../../redux/notif/actions';
+import { accessCategories } from '../../const/access';
 
 export default function Categories() {
-  const token = localStorage.getItem('token')
-  const navigate = useNavigate()
-  const [data, setData] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
-  const getCategoriesAPI = async () => {
-    setIsLoading(true)
-    try {
-      const res = await axios.get(`${config.api_host_dev}/cms/categories`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      setTimeout(() => {
-        setIsLoading(false)
-        console.log(res.data.data)
-        setData(res.data.data)
-      }, 3000);
-    } catch (err) {
-      setIsLoading(true)
-      console.log(err)
-    }
-  }
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const notif = useSelector((state) => state.notif);
+  const categories = useSelector((state) => state.categories);
+  const [access, setAccess] = useState({
+    tambah: false,
+    hapus: false,
+    edit: false,
+  });
+
+  const checkAccess = () => {
+    let { role } = localStorage.getItem('auth')
+      ? JSON.parse(localStorage.getItem('auth'))
+      : {};
+    const access = { tambah: false, hapus: false, edit: false };
+    Object.keys(accessCategories).forEach(function (key, index) {
+      if (accessCategories[key].indexOf(role) >= 0) {
+        access[key] = true;
+      }
+    });
+    setAccess(access);
+  };
+
   useEffect(() => {
-    getCategoriesAPI()
+    checkAccess();
   }, []);
-  if (!token) return <Navigate to='/signin' replace={true} />
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
+
+  const handleDelete = (id) => {
+    // Swal.fire({
+    //   title: 'Apa kamu yakin?',
+    //   text: 'Anda tidak akan dapat mengembalikan ini!',
+    //   icon: 'warning',
+    //   showCancelButton: true,
+    //   confirmButtonColor: '#3085d6',
+    //   cancelButtonColor: '#d33',
+    //   confirmButtonText: 'Iya, Hapus',
+    //   cancelButtonText: 'Batal',
+    // }).then(async (result) => {
+    //   if (result.isConfirmed) {
+    //     const res = await deleteData(`/cms/categories/${id}`);
+    //     dispatch(
+    //       setNotif(
+    //         true,
+    //         'success',
+    //         `berhasil hapus kategori ${res.data.data.name}`
+    //       )
+    //     );
+    //     dispatch(fetchCategories());
+    //   }
+    // });
+  };
+
   return (
-    <>
-      <SNavbar/>
-      <Container className='mt-5'>
-        <SBreadcrumb textSecond='Categories'/>
-        <SButton action={()=>navigate('/categories/create')}>Tambah</SButton>
-        <Table className='mt-3' striped bordered hover variant="dark">
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>Nama</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoading ? (
-              <tr>
-                <td colSpan={3} style={{ textAlign: 'center' }}>
-                  <div className='flex items-center justify-center'>
-                    <Spinner animation='grow' variant='light'/>
-                  </div>
-                </td>
-              </tr>
-            ) :
-              data.map((data, index) => (
-              <tr key={index}>
-                <td>{index+=1}</td>
-                <td>{data.name}</td>
-                <td>@mdo</td>
-              </tr>
-            ))
-            }
-          </tbody>
-        </Table>
-      </Container>
-    </>
-  )
+    <Container className='mt-3'>
+      <SBreadCrumb textSecound={'Categories'} />
+
+      {access.tambah && (
+        <Button
+          className={'mb-3'}
+          action={() => navigate('/categories/create')}
+        >
+          Tambah
+        </Button>
+      )}
+
+      {/* {notif.status && (
+        <SAlert type={notif.typeNotif} message={notif.message} />
+      )} */}
+
+      {/* <Table
+        status={categories.status}
+        thead={['Nama', 'Aksi']}
+        data={categories.data}
+        tbody={['name']}
+        editUrl={access.edit ? `/categories/edit` : null}
+        deleteAction={access.hapus ? (id) => handleDelete(id) : null}
+        withoutPagination
+      /> */}
+    </Container>
+  );
 }
