@@ -30,11 +30,8 @@ export function AppRoute() {
         }
       >
         <Route path='dashboard/*' element={<HomeRoute />} />
-        {/* /* untuk bisa akses semua seperti create, edit */}
-        <Route path='categories' element={<CategoriesRoute/>} />
-        {/* <Route path='talents' element={<TalentsRoute/>} />
-        <Route path='payments' element={<PaymentsRoute/>} /> */}
-        <Route path='dashboard' element={<HomeRoute/>} />
+        <Route path='categories/*' element={<CategoriesRoute/>} />
+        {/* <Route path='dashboard' element={<HomeRoute/>} /> */}
         <Route path='' element={<Navigate to='/dashboard' replace={true} />} />
       </Route>
     </Routes>

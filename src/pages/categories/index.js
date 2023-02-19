@@ -3,13 +3,13 @@ import { Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import SBreadCrumb from '../../components/Breadcrumb';
 import Button from '../../components/Button';
-// import Table from '../../components/TableWithAction';
+import Table from '../../components/TableWithAction';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchCategories } from '../../redux/categories/actions';
 import SAlert from '../../components/Alert';
-// import Swal from 'sweetalert2';
+import Swal from 'sweetalert2';
 import { deleteData } from '../../utils/fetch';
-// import { setNotif } from '../../redux/notif/actions';
+import { setNotif } from '../../redux/notif/actions';
 import { accessCategories } from '../../const/access';
 
 export default function Categories() {
@@ -46,28 +46,29 @@ export default function Categories() {
   }, [dispatch]);
 
   const handleDelete = (id) => {
-    // Swal.fire({
-    //   title: 'Apa kamu yakin?',
-    //   text: 'Anda tidak akan dapat mengembalikan ini!',
-    //   icon: 'warning',
-    //   showCancelButton: true,
-    //   confirmButtonColor: '#3085d6',
-    //   cancelButtonColor: '#d33',
-    //   confirmButtonText: 'Iya, Hapus',
-    //   cancelButtonText: 'Batal',
-    // }).then(async (result) => {
-    //   if (result.isConfirmed) {
-    //     const res = await deleteData(`/cms/categories/${id}`);
-    //     dispatch(
-    //       setNotif(
-    //         true,
-    //         'success',
-    //         `berhasil hapus kategori ${res.data.data.name}`
-    //       )
-    //     );
-    //     dispatch(fetchCategories());
-    //   }
-    // });
+    Swal.fire({
+      title: 'Apa kamu yakin?',
+      text: 'Anda tidak akan dapat mengembalikan ini!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Iya, Hapus',
+      cancelButtonText: 'Batal',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        console.log('Masuk sini')
+        const res = await deleteData(`/cms/categories/${id}`);
+        dispatch(
+          setNotif(
+            true,
+            'success',
+            `berhasil hapus kategori ${res.data.data.name}`
+          )
+        );
+        dispatch(fetchCategories());
+      }
+    });
   };
 
   return (
@@ -83,11 +84,11 @@ export default function Categories() {
         </Button>
       )}
 
-      {/* {notif.status && (
+      {notif.status && (
         <SAlert type={notif.typeNotif} message={notif.message} />
-      )} */}
+      )}
 
-      {/* <Table
+      <Table
         status={categories.status}
         thead={['Nama', 'Aksi']}
         data={categories.data}
@@ -95,7 +96,7 @@ export default function Categories() {
         editUrl={access.edit ? `/categories/edit` : null}
         deleteAction={access.hapus ? (id) => handleDelete(id) : null}
         withoutPagination
-      /> */}
+      />
     </Container>
   );
 }

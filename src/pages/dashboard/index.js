@@ -5,7 +5,7 @@ import SBreadcrumb from '../../components/Breadcrumb'
 export default function index() {
   return (
     <>
-      <Container className='mt-5'>
+      <Container className='mt-3'>
         <SBreadcrumb />
         <h1>Dashboard</h1>
       </Container>
