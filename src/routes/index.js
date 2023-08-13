@@ -4,8 +4,8 @@ import GuestOnlyRoute from '../components/GuestOnlyRoute'
 
 import Login from '../pages/signin';
 import { HomeRoute } from './HomeRoute'
-// import { TalentsRoute } from './TalentsRoute'
 import { CategoriesRoute } from './CategoriesRoute'
+import { TalentsRoute } from './TalentsRoute'
 // import { PaymentsRoute } from './PaymentsRoute'
 import SNavbar from '../components/Navbar'
 
@@ -13,26 +13,26 @@ export function AppRoute() {
   return (
     <Routes>
       <Route
-        path='login'
+        path="login"
         element={
           <GuestOnlyRoute>
-            <Login/>
+            <Login />
           </GuestOnlyRoute>
         }
       />
       <Route
-        path='/'
+        path="/"
         element={
           <>
             <SNavbar />
-            <GuardRoute/>
+            <GuardRoute />
           </>
         }
       >
-        <Route path='dashboard/*' element={<HomeRoute />} />
-        <Route path='categories/*' element={<CategoriesRoute/>} />
-        {/* <Route path='dashboard' element={<HomeRoute/>} /> */}
-        <Route path='' element={<Navigate to='/dashboard' replace={true} />} />
+        <Route path="dashboard/*" element={<HomeRoute />} />
+        <Route path="categories/*" element={<CategoriesRoute />} />
+        <Route path="talents/*" element={<TalentsRoute />} />
+        <Route path="" element={<Navigate to="/dashboard" replace={true} />} />
       </Route>
     </Routes>
   )
