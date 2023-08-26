@@ -71,8 +71,8 @@ export default function SNavbar() {
           <NavAccess
             role={role}
             roles={accessOrders.lihat}
-            action={() => navigate('/transactions')}>
-            Transaction
+            action={() => navigate('/orders')}>
+            Orders
           </NavAccess>
         </Nav>
         <Nav className='justify-content-end'>
