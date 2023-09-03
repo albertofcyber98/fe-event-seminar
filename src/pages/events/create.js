@@ -60,15 +60,16 @@ function EventsCreate() {
     };
 
     const handleChange = async (e) => {
+        setAlert({
+            status: false,
+        })
         if (e.target.name === 'avatar') {
             if (
                 e?.target?.files[0]?.type === 'image/jpg' ||
                 e?.target?.files[0]?.type === 'image/png' ||
                 e?.target?.files[0]?.type === 'image/jpeg'
             ) {
-                var size = parseFloat(e.target.files[0].size / 3145728).toFixed(2);
-
-                if (size > 2) {
+                if (e.target.files[0].size > 3000000) {
                     setAlert({
                         ...alert,
                         status: true,
@@ -103,8 +104,6 @@ function EventsCreate() {
                 });
             }
         } else if (e.target.name === 'category' || e.target.name === 'talent') {
-            console.log('e.target.name');
-            console.log(e.target.name);
             setForm({ ...form, [e.target.name]: e });
         } else {
             setForm({ ...form, [e.target.name]: e.target.value });

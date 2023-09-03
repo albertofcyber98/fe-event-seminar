@@ -30,7 +30,7 @@ function EventsEdit() {
         tickets: [
             {
                 type: '',
-                status: '',
+                statusTicketCategories: '',
                 stock: '',
                 price: '',
             },
@@ -209,7 +209,7 @@ function EventsEdit() {
         let _temp = [...form.tickets];
         _temp.push({
             type: '',
-            status: '',
+            statusTicketCategories: '',
             stock: '',
             price: '',
         });

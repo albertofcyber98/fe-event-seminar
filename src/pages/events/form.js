@@ -100,8 +100,8 @@ export default function EventsForm({
             <Form.Label>Key Point</Form.Label>
             <Row>
                 {form.keyPoint.map((key, index) => (
-                    <Col sm={6}>
-                        <InputGroup className='mb-3' key={index}>
+                    <Col sm={6} key={index}>
+                        <InputGroup className='mb-3'>
                             <FormControl
                                 placeholder='Masukan keypoint'
                                 value={key}
@@ -166,7 +166,7 @@ export default function EventsForm({
             <Form.Label>Tiket</Form.Label>
 
             {form.tickets.map((tic, index) => (
-                <Row>
+                <Row key={index}>
                     <Col sm={6}>
                         <TextInputWithLabel
                             placeholder={'Masukan tipe tiket'}
@@ -202,7 +202,7 @@ export default function EventsForm({
                             placeholder={'Masukan status'}
                             label={'Status'}
                             name='status'
-                            value={tic.status}
+                            value={tic.statusTicketCategories}
                             type='text'
                             onChange={(e) => handleChangeTicket(e, index)}
                         />
