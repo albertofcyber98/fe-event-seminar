@@ -26,28 +26,20 @@ export default function Signin() {
   })
   const handleSubmit = async () => {
     setIsLoading(true)
-    try {
       const res = await postData(`/cms/auth/signin`, form)
-      // const res = await axios.post(
-      //   `${config.api_host_dev}/cms/auth/signin`,
-      //   {
-      //     email: form.email,
-      //     password: form.password
-      //   }
-      // )
-      // console.log(res.data.data.token)
-      // localStorage.setItem('token', res.data.data.token)
-      dispatch(userLogin(res.data.data.token, res.data.data.role))
-      setIsLoading(false)
-      navigate('/')
-    } catch (err) {
-      setIsLoading(false)
-      setAlert({
-        status: true,
-        type: 'danger',
-        message: err?.response?.data?.msg ?? 'Internal server error'
-      })
-    }
+      if(res?.data?.data){
+        dispatch(userLogin(res.data.data.token, res.data.data.role, res.data.data.refreshToken ))
+        setIsLoading(false)
+        navigate('/')
+      }else{
+
+        setIsLoading(false)
+        setAlert({
+          status: true,
+          type: 'danger',
+          message: res?.response?.data?.msg ?? 'Internal server error'
+        })
+      }
   }
   // const token = localStorage.getItem('token')
   // if (token) return <Navigate to='/' replace={true} />

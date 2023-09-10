@@ -98,8 +98,8 @@ function EventPage() {
 
     return (
         <Container className='mt-3'>
-            <Button action={() => navigate('/events/create')}>Tambah</Button>
             <BreadCrumb textSecound={'Events'} />
+            <Button action={() => navigate('/events/create')} className='mb-3'>Tambah</Button>
             <Row>
                 <Col>
                     <SearchInput
