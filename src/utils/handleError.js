@@ -22,10 +22,6 @@ const handleError = (error) => {
           })
         );
         originalRequest.headers.Authorization = `Bearer ${res.data.data.token}`;
-
-        console.log('originalRequest');
-        console.log(originalRequest);
-
         return axios(originalRequest);
       })
       .catch((err) => {
